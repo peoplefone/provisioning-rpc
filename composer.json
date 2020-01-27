@@ -1,0 +1,22 @@
+{
+    "name": "peoplefone/provisioning-rpc",
+    "description": "Manage MAC addresses for the Auerswald, Gigaset, Panasonic, Snom, Yealink XML-RPC server to redirect them to your provisioning server.",
+    "version": "1.0.0",
+    "keywords": ["provisioning","redirect server","xmlrpc","auerswald","gigaset","panasonic","snom","yealink"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolas Urech",
+            "email": "nicolas.urech@peoplefone.com"
+        }
+    ],
+    "require": {
+    	"php": ">=5.6",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Peoplefone\\": "src/"
+        }
+    }
+}
