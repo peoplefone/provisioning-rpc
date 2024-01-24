@@ -43,7 +43,6 @@ abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
      */
     public function createXml(string $method, array $params): string
     {
-        header('Content-type: text/xml; charset=UTF-8');
         $oXMLWriter = new XMLWriter();
         $oXMLWriter->openMemory();
         $oXMLWriter->startDocument('1.0', 'UTF-8');
