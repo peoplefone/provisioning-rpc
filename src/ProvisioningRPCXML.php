@@ -29,8 +29,8 @@ abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
 		}
 		
 		$mac = preg_replace("/[^a-f0-9\-]/", "", strtolower($mac));
-		
-		return strlen($macid)>0 ? $mac."-".$macid : $mac;
+
+        return !is_null($macid) && strlen($macid)>0 ? $mac."-".$macid : $mac;
 	}
 
     /**
