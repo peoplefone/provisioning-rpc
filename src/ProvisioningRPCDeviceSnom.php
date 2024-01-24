@@ -64,7 +64,7 @@ class ProvisioningRPCDeviceSnom extends ProvisioningRPCXML
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("redirect.checkPhone", $mac),
+                    'body' => parent::createXml('redirect.checkPhone', [$mac])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -127,7 +127,7 @@ class ProvisioningRPCDeviceSnom extends ProvisioningRPCXML
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("redirect.registerPhone", [$mac, $url]),
+                    'body' => parent::createXml('redirect.registerPhone', [$mac, $url])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -185,7 +185,7 @@ class ProvisioningRPCDeviceSnom extends ProvisioningRPCXML
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("redirect.deregisterPhone", $mac),
+                    'body' => parent::createXml('redirect.deregisterPhone', [$mac])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
