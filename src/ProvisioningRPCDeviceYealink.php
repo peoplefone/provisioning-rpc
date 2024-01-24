@@ -31,12 +31,11 @@ class ProvisioningRPCDeviceYealink extends ProvisioningRPCXML
 		}
 		
 		// XMLRPC CALL
-		
 		try {
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("redirect.checkDevice", $mac),
+                    'body' => parent::createXml('redirect.checkDevice', [$mac])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -99,7 +98,7 @@ class ProvisioningRPCDeviceYealink extends ProvisioningRPCXML
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("redirect.registerDevice", [$mac, $url, '1']),
+                    'body' => parent::createXml('redirect.registerDevice', [$mac, $url, '1'])
 					// 1 = force overriding as we checked the mac first
 			]);
 			
@@ -152,11 +151,11 @@ class ProvisioningRPCDeviceYealink extends ProvisioningRPCXML
 		// XMLRPC CALL
 		
 		try {
-			$response = $this->client->post('/xmlrpc/',[
-					'auth' => $this->client_auth,
-					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("redirect.deRegisterDevice", $mac),
-			]);
+            $response = $this->client->post('/xmlrpc/', [
+                'auth' => $this->client_auth,
+                'headers' => $this->client_headers,
+                'body' => parent::createXml('redirect.deRegisterDevice', [$mac])
+            ]);
 			
 			$xmlrpc = $response->getBody()->getContents();
 		}

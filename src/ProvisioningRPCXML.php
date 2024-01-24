@@ -2,6 +2,8 @@
 
 namespace Peoplefone;
 
+use XMLWriter;
+
 abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
 {
 	protected $client;
@@ -27,7 +29,47 @@ abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
 		}
 		
 		$mac = preg_replace("/[^a-f0-9\-]/", "", strtolower($mac));
-		
-		return strlen($macid)>0 ? $mac."-".$macid : $mac;
+
+        return !is_null($macid) && strlen($macid)>0 ? $mac."-".$macid : $mac;
 	}
+
+    /**
+     * @param string $method
+     * @param array $params
+     * @return string
+     *
+     * replace deprecated xmlrpc_encode_request
+     *
+     */
+    public function createXml(string $method, array $params): string
+    {
+        $oXMLWriter = new XMLWriter();
+        $oXMLWriter->openMemory();
+        $oXMLWriter->startDocument('1.0', 'UTF-8');
+
+        $oXMLWriter->startElement('methodCall');
+        // set the method name
+        $oXMLWriter->startElement('methodName');
+        $oXMLWriter->text($method);
+        $oXMLWriter->endElement(); // methodName
+
+        $oXMLWriter->startElement('params');
+        foreach ($params as $param) {
+            $oXMLWriter->startElement('param');
+            $oXMLWriter->startElement('value');
+            $oXMLWriter->startElement('string');
+            $oXMLWriter->text($param);
+            $oXMLWriter->endElement(); // string
+            $oXMLWriter->endElement(); // value
+            $oXMLWriter->endElement(); // param
+        }
+        $oXMLWriter->endElement(); // string
+        $oXMLWriter->endElement(); // value
+        $oXMLWriter->endElement(); // param
+        $oXMLWriter->endElement(); // params
+        $oXMLWriter->endElement(); // methodCall
+
+        $oXMLWriter->endDocument();
+        return $oXMLWriter->outputMemory(TRUE);
+    }
 }

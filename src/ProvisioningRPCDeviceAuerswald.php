@@ -36,7 +36,7 @@ class ProvisioningRPCDeviceAuerswald extends ProvisioningRPCXML
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("DeviceInfo", $mac),
+                    'body' => parent::createXml('DeviceInfo', [$mac])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -86,7 +86,7 @@ class ProvisioningRPCDeviceAuerswald extends ProvisioningRPCXML
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("DeviceRegister", [$mac, $url]),
+                    'body' => parent::createXml('DeviceRegister', [$mac, $url])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -131,7 +131,7 @@ class ProvisioningRPCDeviceAuerswald extends ProvisioningRPCXML
 			$response = $this->client->post('/xmlrpc/',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("DeviceDeregister", $mac),
+                    'body' => parent::createXml('DeviceDeregister', [$mac])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();

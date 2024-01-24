@@ -36,7 +36,7 @@ class ProvisioningRPCDevicePanasonic extends ProvisioningRPCXML
 			$response = $this->client->post('/redirect/xmlrpc',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("ipredirect.checkPhones", [$mac]),
+                    'body' => parent::createXml('ipredirect.checkPhones', [$mac])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -100,7 +100,7 @@ class ProvisioningRPCDevicePanasonic extends ProvisioningRPCXML
 			$response = $this->client->post('/redirect/xmlrpc',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("ipredirect.registerPhone", [$mac, $url]),
+                    'body' => parent::createXml('ipredirect.registerPhone', [$mac, $url])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -160,7 +160,7 @@ class ProvisioningRPCDevicePanasonic extends ProvisioningRPCXML
 			$response = $this->client->post('/redirect/xmlrpc',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("ipredirect.unregisterPhone", $mac),
+                    'body' => parent::createXml('ipredirect.unregisterPhone', [$mac])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();

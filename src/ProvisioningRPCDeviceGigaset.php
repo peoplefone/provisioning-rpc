@@ -25,18 +25,19 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 	{
 		$this->profile_name = $profile_name;
 	}
-	
-	/**
-	 * @param string $macid
-	 * @return ProvisioningRPCResult
-	 */
-	public function checkPhone(string $macid) : ProvisioningRPCResult
+
+    /**
+     * @param string $mac
+     * @return ProvisioningRPCResult
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+	public function checkPhone(string $mac) : ProvisioningRPCResult
 	{
 		// FORMAT MAC
 		
-		$macid = parent::formatMacAddress($macid);
-		if(strlen($macid)!=12 && strlen($macid)!=17) { // attention: MAC-ID
-			return ProvisioningRPCResult::macAddressInvalid($macid);
+		$mac = parent::formatMacAddress($mac);
+		if(strlen($mac)!=12 && strlen($mac)!=17) { // attention: MAC-ID
+			return ProvisioningRPCResult::macAddressInvalid($mac);
 		}
 		
 		// XMLRPC CALL
@@ -45,7 +46,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 			$response = $this->client->post('/apxml/rpc.do',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("autoprov.checkDevice", strtoupper($macid)),
+                    'body' => parent::createXml('autoprov.checkDevice', [strtoupper($mac)])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -56,7 +57,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 		
 		$data = xmlrpc_decode($xmlrpc);
 		
-		$mac = strlen($macid)==17 ? substr($macid, 0, 12) : $macid;
+		$mac = strlen($mac)==17 ? substr($mac, 0, 12) : $mac;
 		
 		if(isset($data[0]) && $data[0]) {
 			return ProvisioningRPCResult::macAddressFound($mac);
@@ -78,24 +79,26 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 		
 		return ProvisioningRPCResult::unknownError($mac);
 	}
-	
-	/**
-	 * @param string $macid
-	 * @param string $url
-	 * @return ProvisioningRPCResult
-	 */
-	public function addPhone(string $macid, string $url, bool $overwrite = true) : ProvisioningRPCResult
+
+    /**
+     * @param string $mac
+     * @param string $url
+     * @param bool $overwrite
+     * @return ProvisioningRPCResult
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+	public function addPhone(string $mac, string $url, bool $overwrite = true) : ProvisioningRPCResult
 	{
 		// FORMAT MAC
 		
-		$macid = parent::formatMacAddress($macid);
-		if(strlen($macid)!=12 && strlen($macid)!=17) {
-			return ProvisioningRPCResult::macAddressInvalid($macid);
+		$mac = parent::formatMacAddress($mac);
+		if(strlen($mac)!=12 && strlen($mac)!=17) {
+			return ProvisioningRPCResult::macAddressInvalid($mac);
 		}
 		
 		// CHECK PHONE
 		
-		$check = self::checkPhone($macid);
+		$check = self::checkPhone($mac);
 		
 		if(!in_array($check->code, [ProvisioningRPCResult::macNotFound, ProvisioningRPCResult::resultSucceeded])) {
 			return $check;
@@ -103,7 +106,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 		
 		if($check->code==ProvisioningRPCResult::resultSucceeded) {
 			if($overwrite==true) {
-				$delete = self::removePhone($macid);
+				$delete = self::removePhone($mac);
 				if($delete->code!=ProvisioningRPCResult::resultSucceeded) {
 					return $delete;
 				}
@@ -119,7 +122,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 			$response = $this->client->post('/apxml/rpc.do',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("autoprov.registerDevice", [strtoupper($macid), $url, $this->profile_name]),
+                    'body' => parent::createXml('autoprov.registerDevice', [strtoupper($mac), $url, $this->profile_name])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -130,7 +133,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 		
 		$data = xmlrpc_decode($xmlrpc);
 		
-		$mac = strlen($macid)==17 ? substr($macid, 0, 12) : $macid;
+		$mac = strlen($mac)==17 ? substr($mac, 0, 12) : $mac;
 		
 		if(isset($data[0]) && $data[0]) {
 			return ProvisioningRPCResult::macAddressAdded($mac);
@@ -161,21 +164,21 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 	}
 	
 	/**
-	 * @param string $macid
+	 * @param string $mac
 	 * @return ProvisioningRPCResult
 	 */
-	public function removePhone(string $macid) : ProvisioningRPCResult
+	public function removePhone(string $mac) : ProvisioningRPCResult
 	{
 		// FORMAT MAC
 		
-		$macid = parent::formatMacAddress($macid);
-		if(strlen($macid)!=12 && strlen($macid)!=17) {
-			return ProvisioningRPCResult::macAddressInvalid($macid);
+		$mac = parent::formatMacAddress($mac);
+		if(strlen($mac)!=12 && strlen($mac)!=17) {
+			return ProvisioningRPCResult::macAddressInvalid($mac);
 		}
 		
 		// CHECK PHONE
 		
-		$check = self::checkPhone($macid);
+		$check = self::checkPhone($mac);
 		
 		if($check->code!==ProvisioningRPCResult::resultSucceeded) {
 			return $check;
@@ -187,7 +190,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 			$response = $this->client->post('/apxml/rpc.do',[
 					'auth' => $this->client_auth,
 					'headers' => $this->client_headers,
-					'body' => xmlrpc_encode_request("autoprov.deregisterDevice", strtoupper($macid)),
+                    'body' => parent::createXml('autoprov.deregisterDevice', [strtoupper($mac)])
 			]);
 			
 			$xmlrpc = $response->getBody()->getContents();
@@ -198,7 +201,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 		
 		$data = xmlrpc_decode($xmlrpc);
 		
-		$mac = strlen($macid)==17 ? substr($macid, 0, 12) : $macid;
+		$mac = strlen($mac)==17 ? substr($mac, 0, 12) : $mac;
 		
 		if(isset($data[1])) {
 			switch (strtolower($data[1])) {
