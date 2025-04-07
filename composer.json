@@ -12,7 +12,6 @@
     ],
     "require": {
         "php": "^8.0",
-        "ext-xmlrpc" : "*",
         "guzzlehttp/guzzle": "^6.5||^7.0",
         "ext-xmlwriter": "*"
     },
