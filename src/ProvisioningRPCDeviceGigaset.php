@@ -55,7 +55,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		$mac = strlen($mac)==17 ? substr($mac, 0, 12) : $mac;
 		
@@ -131,7 +131,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		$mac = strlen($mac)==17 ? substr($mac, 0, 12) : $mac;
 		
@@ -199,7 +199,7 @@ class ProvisioningRPCDeviceGigaset extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		$mac = strlen($mac)==17 ? substr($mac, 0, 12) : $mac;
 		
