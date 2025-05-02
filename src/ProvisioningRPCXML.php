@@ -11,7 +11,7 @@ use XMLWriter;
 abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
 {
 	protected $client;
-    protected $encoder;
+        protected $encoder;
 	
 	public function __construct($base_uri)
 	{
@@ -19,7 +19,7 @@ abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
 				'base_uri' => $base_uri,
 		]);
 
-        $this->encoder = new Encoder();
+            $this->encoder = new Encoder();
 	}
 	
 	/**
