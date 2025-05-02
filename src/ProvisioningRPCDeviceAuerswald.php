@@ -45,7 +45,7 @@ class ProvisioningRPCDeviceAuerswald extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if(is_array($data) && isset($data['mac'])) {
 			return ProvisioningRPCResult::macAddressFound($mac);
@@ -95,7 +95,7 @@ class ProvisioningRPCDeviceAuerswald extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if($data) {
 			return ProvisioningRPCResult::macAddressAdded($mac);
@@ -140,7 +140,7 @@ class ProvisioningRPCDeviceAuerswald extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if($data) {
 			return ProvisioningRPCResult::macAddressRemoved($mac);

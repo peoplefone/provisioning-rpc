@@ -45,7 +45,7 @@ class ProvisioningRPCDevicePanasonic extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if(isset($data[0]) && isset($data[0]['faultCode'])) {
 			switch ($data[0]['faultCode']) {
@@ -109,7 +109,7 @@ class ProvisioningRPCDevicePanasonic extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if($data===true) {
 			return ProvisioningRPCResult::macAddressAdded($mac);
@@ -169,7 +169,7 @@ class ProvisioningRPCDevicePanasonic extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if($data===true) {
 			return ProvisioningRPCResult::macAddressRemoved($mac);

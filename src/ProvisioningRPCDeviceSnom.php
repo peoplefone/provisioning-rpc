@@ -73,7 +73,7 @@ class ProvisioningRPCDeviceSnom extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if(isset($data[1])) {
 			switch (strtolower($data[1])) {
@@ -136,7 +136,7 @@ class ProvisioningRPCDeviceSnom extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if(isset($data[1])) {
 			switch (strtolower($data[1])) {
@@ -194,7 +194,7 @@ class ProvisioningRPCDeviceSnom extends ProvisioningRPCXML
 			return ProvisioningRPCResult::connectionError($mac, $e->getMessage());
 		}
 		
-		$data = xmlrpc_decode($xmlrpc);
+		$data = $this->decodeXml($xmlrpc);
 		
 		if(isset($data[1])) {
 			switch (strtolower($data[1])) {

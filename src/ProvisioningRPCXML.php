@@ -2,17 +2,24 @@
 
 namespace Peoplefone;
 
+use PhpXmlRpc\Encoder;
+use PhpXmlRpc\Request;
+use PhpXmlRpc\Response;
+use PhpXmlRpc\Value;
 use XMLWriter;
 
 abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
 {
 	protected $client;
+        protected $encoder;
 	
 	public function __construct($base_uri)
 	{
 		$this->client = new \GuzzleHttp\Client([
 				'base_uri' => $base_uri,
 		]);
+
+            $this->encoder = new Encoder();
 	}
 	
 	/**
@@ -71,5 +78,16 @@ abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
 
         $oXMLWriter->endDocument();
         return $oXMLWriter->outputMemory(TRUE);
+    }
+
+    /**
+     * Decode XML
+     * @param string $data
+     * @param array $options
+     * @return false|Request|Response|Value
+     */
+    protected function decodeXml(string $data, array $options = [])
+    {
+        return $this->encoder->decodeXml($data, $options);
     }
 }
