@@ -88,6 +88,12 @@ abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
      */
     protected function decodeXml(string $data, array $options = [])
     {
-        return $this->encoder->decodeXml($data, $options);
+        $response = $this->encoder->decodeXml($data, $options);
+
+        if ($response instanceof Response && $response->faultCode()) {
+            throw new \RuntimeException("XML-RPC Fault {$response->faultCode()}: {$response->faultString()}");
+        }
+
+        return $this->encoder->decode($response->value());
     }
 }
