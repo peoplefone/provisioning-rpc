@@ -84,7 +84,6 @@ abstract class ProvisioningRPCXML implements ProvisioningRPCInterface
      * Decode XML
      * @param string $data
      * @param array $options
-     * @return false|Request|Response|Value
      */
     protected function decodeXml(string $data, array $options = [])
     {
